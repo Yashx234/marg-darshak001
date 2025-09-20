@@ -18,11 +18,11 @@ const Index = () => {
             <Navigation className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="text-5xl font-bold mb-6 bg-gradient-primary bg-clip-text text-transparent">
-            AI Traffic Management System
+            Marg-Darshak
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Advanced traffic congestion management with real-time AI optimization, 
-            emergency vehicle detection, and intelligent signal control.
+            Advanced AI-powered traffic congestion management system with real-time optimization, 
+            emergency vehicle detection, and intelligent signal control for Delhi NCR.
           </p>
           <Button 
             onClick={() => navigate("/")} 
@@ -41,9 +41,9 @@ const Index = () => {
               <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4">
                 <MapPin className="w-6 h-6 text-primary" />
               </div>
-              <CardTitle>Live Traffic Monitoring</CardTitle>
+              <CardTitle>Live Area Monitoring</CardTitle>
               <CardDescription>
-                Real-time congestion tracking across all intersections with Google Maps integration
+                Real-time congestion tracking across Delhi NCR areas with Google Maps integration
               </CardDescription>
             </CardHeader>
           </Card>
@@ -103,7 +103,7 @@ const Index = () => {
               </div>
               <CardTitle>Area-wise Management</CardTitle>
               <CardDescription>
-                Comprehensive traffic control organized by geographic zones and districts
+                Comprehensive traffic control organized by Delhi NCR zones and major areas
               </CardDescription>
             </CardHeader>
           </Card>

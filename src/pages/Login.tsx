@@ -36,7 +36,7 @@ const Login = () => {
             <Navigation className="w-8 h-8 text-primary-foreground" />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            Traffic Control Center
+            Marg-Darshak
           </h1>
           <p className="text-muted-foreground mt-2">
             AI-Powered Traffic Management System

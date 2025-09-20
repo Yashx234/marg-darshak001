@@ -40,23 +40,34 @@ interface VehicleDetection {
 const Dashboard = () => {
   const navigate = useNavigate();
   const [trafficData, setTrafficData] = useState<TrafficData[]>([
-    { id: "1", area: "Downtown Intersection", status: "warning", vehicles: 45, waitTime: 120, lastUpdate: "2 min ago" },
-    { id: "2", area: "Highway Junction", status: "normal", vehicles: 28, waitTime: 30, lastUpdate: "1 min ago" },
-    { id: "3", area: "School Zone", status: "emergency", vehicles: 67, waitTime: 180, lastUpdate: "Just now" },
-    { id: "4", area: "Business District", status: "normal", vehicles: 22, waitTime: 45, lastUpdate: "3 min ago" },
+    { id: "1", area: "Connaught Place", status: "warning", vehicles: 67, waitTime: 145, lastUpdate: "1 min ago" },
+    { id: "2", area: "Karol Bagh Junction", status: "normal", vehicles: 34, waitTime: 42, lastUpdate: "2 min ago" },
+    { id: "3", area: "Lajpat Nagar Market", status: "emergency", vehicles: 89, waitTime: 220, lastUpdate: "Just now" },
+    { id: "4", area: "India Gate Circle", status: "normal", vehicles: 28, waitTime: 38, lastUpdate: "1 min ago" },
+    { id: "5", area: "Rajouri Garden", status: "warning", vehicles: 56, waitTime: 120, lastUpdate: "3 min ago" },
+    { id: "6", area: "Nehru Place", status: "normal", vehicles: 41, waitTime: 55, lastUpdate: "2 min ago" },
+    { id: "7", area: "Dwarka Sector 21", status: "emergency", vehicles: 78, waitTime: 195, lastUpdate: "Just now" },
+    { id: "8", area: "Rohini Sector 7", status: "normal", vehicles: 29, waitTime: 35, lastUpdate: "4 min ago" },
+    { id: "9", area: "Pitampura Metro", status: "warning", vehicles: 62, waitTime: 132, lastUpdate: "2 min ago" },
+    { id: "10", area: "Janakpuri West", status: "normal", vehicles: 33, waitTime: 48, lastUpdate: "3 min ago" },
+    { id: "11", area: "Saket District Centre", status: "emergency", vehicles: 84, waitTime: 210, lastUpdate: "1 min ago" },
+    { id: "12", area: "Vasant Kunj", status: "normal", vehicles: 26, waitTime: 41, lastUpdate: "5 min ago" },
   ]);
 
   const [vehicleDetection] = useState<VehicleDetection[]>([
-    { type: "car", count: 1247, percentage: 78 },
-    { type: "truck", count: 186, percentage: 12 },
-    { type: "bike", count: 94, percentage: 6 },
-    { type: "emergency", count: 3, percentage: 4 },
+    { type: "car", count: 2847, percentage: 72 },
+    { type: "truck", count: 486, percentage: 12 },
+    { type: "bike", count: 594, percentage: 15 },
+    { type: "emergency", count: 8, percentage: 1 },
   ]);
 
   const [alerts] = useState([
-    { id: 1, type: "violation", message: "Speed limit exceeded - Downtown", time: "2 min ago", severity: "high" },
-    { id: 2, type: "emergency", message: "Ambulance detected - Route priority", time: "5 min ago", severity: "critical" },
-    { id: 3, type: "congestion", message: "Heavy traffic - Business District", time: "8 min ago", severity: "medium" },
+    { id: 1, type: "violation", message: "Speed limit exceeded - Connaught Place", time: "1 min ago", severity: "high" },
+    { id: 2, type: "emergency", message: "Ambulance detected - Lajpat Nagar route priority", time: "2 min ago", severity: "critical" },
+    { id: 3, type: "congestion", message: "Heavy traffic buildup - Karol Bagh Junction", time: "4 min ago", severity: "medium" },
+    { id: 4, type: "violation", message: "Red light violation - India Gate Circle", time: "6 min ago", severity: "high" },
+    { id: 5, type: "emergency", message: "Fire brigade detected - Dwarka Sector 21", time: "7 min ago", severity: "critical" },
+    { id: 6, type: "congestion", message: "Peak hour congestion - Nehru Place", time: "8 min ago", severity: "medium" },
   ]);
 
   const handleLogout = () => {
@@ -102,8 +113,8 @@ const Dashboard = () => {
               <Navigation className="w-6 h-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">Traffic Control Center</h1>
-              <p className="text-sm text-muted-foreground">AI-Powered Management System</p>
+              <h1 className="text-xl font-bold">Marg-Darshak Control Center</h1>
+              <p className="text-sm text-muted-foreground">AI-Powered Traffic Management System</p>
             </div>
           </div>
           
@@ -135,10 +146,10 @@ const Dashboard = () => {
               <Card className="bg-glass border-glass backdrop-blur-md">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Active Intersections</p>
-                      <p className="text-2xl font-bold">24</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Active Areas</p>
+                    <p className="text-2xl font-bold">12</p>
+                  </div>
                     <MapPin className="w-8 h-8 text-primary" />
                   </div>
                 </CardContent>
@@ -147,10 +158,10 @@ const Dashboard = () => {
               <Card className="bg-glass border-glass backdrop-blur-md">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Total Vehicles</p>
-                      <p className="text-2xl font-bold">1,530</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Vehicles</p>
+                    <p className="text-2xl font-bold">3,935</p>
+                  </div>
                     <Car className="w-8 h-8 text-traffic-normal" />
                   </div>
                 </CardContent>
@@ -159,10 +170,10 @@ const Dashboard = () => {
               <Card className="bg-glass border-glass backdrop-blur-md">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Avg Wait Time</p>
-                      <p className="text-2xl font-bold">89s</p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Avg Wait Time</p>
+                    <p className="text-2xl font-bold">112s</p>
+                  </div>
                     <Clock className="w-8 h-8 text-traffic-warning" />
                   </div>
                 </CardContent>
@@ -186,19 +197,19 @@ const Dashboard = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-primary" />
-                  Live Traffic Map
+                  Live Area-wise Traffic Map
                 </CardTitle>
                 <CardDescription>
-                  Real-time congestion monitoring across all intersections
+                  Real-time congestion monitoring across Delhi NCR areas
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="h-96 bg-secondary/20 rounded-lg flex items-center justify-center border-2 border-dashed border-border">
                   <div className="text-center">
                     <MapPin className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                    <p className="text-lg font-semibold text-muted-foreground">Google Maps Integration</p>
+                    <p className="text-lg font-semibold text-muted-foreground">Delhi NCR Area Map</p>
                     <p className="text-sm text-muted-foreground mt-2">
-                      Connect to Supabase to enable live map with real-time traffic data
+                      Connect to Supabase to enable live Google Maps with real-time area-wise traffic data
                     </p>
                   </div>
                 </div>
@@ -207,7 +218,20 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="traffic" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Area Selection Filter */}
+            <Card className="bg-glass border-glass backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-primary" />
+                  Area-wise Traffic Control
+                </CardTitle>
+                <CardDescription>
+                  Select and manage traffic signals across different areas in Delhi NCR
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
               {trafficData.map((area) => (
                 <Card key={area.id} className="bg-glass border-glass backdrop-blur-md">
                   <CardHeader>
