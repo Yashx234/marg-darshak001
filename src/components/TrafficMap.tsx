@@ -1,7 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 interface TrafficArea {
@@ -23,7 +20,7 @@ declare global {
 const TrafficMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey] = useState('AIzaSyBZKvU0Jct8QG9RMx0fO7xBXBj-GggEmXk');
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   // Delhi NCR traffic areas with coordinates
@@ -131,42 +128,20 @@ const TrafficMap = () => {
     }
   };
 
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      initializeMap(apiKey.trim());
+  useEffect(() => {
+    if (apiKey && !isMapLoaded) {
+      initializeMap(apiKey);
     }
-  };
+  }, [apiKey, isMapLoaded]);
 
   if (!isMapLoaded) {
     return (
       <div className="flex flex-col items-center justify-center h-[400px] space-y-4 border border-border rounded-lg bg-card/50">
         <div className="text-center space-y-2">
-          <h3 className="text-lg font-semibold">Google Maps Integration</h3>
+          <h3 className="text-lg font-semibold">Loading Traffic Map</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Enter your Google Maps API key to display live traffic data with area-wise visualization
+            Initializing Google Maps with live traffic data...
           </p>
-        </div>
-        
-        <form onSubmit={handleApiKeySubmit} className="space-y-3 w-full max-w-sm">
-          <div>
-            <Label htmlFor="apiKey">Google Maps API Key</Label>
-            <Input
-              id="apiKey"
-              type="text"
-              placeholder="Enter your API key"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="mt-1"
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={!apiKey.trim()}>
-            Load Map
-          </Button>
-        </form>
-
-        <div className="text-xs text-muted-foreground text-center">
-          <p>Get your API key from the <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener noreferrer" className="text-primary underline">Google Cloud Console</a></p>
         </div>
 
         {/* Legend */}
