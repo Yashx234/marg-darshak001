@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TrafficMap from "@/components/TrafficMap";
 import { 
   Navigation, 
   MapPin, 
@@ -192,7 +193,7 @@ const Dashboard = () => {
               </Card>
             </div>
 
-            {/* Map Placeholder */}
+            {/* Live Traffic Map */}
             <Card className="bg-glass border-glass backdrop-blur-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -204,15 +205,7 @@ const Dashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-96 bg-secondary/20 rounded-lg flex items-center justify-center border-2 border-dashed border-border">
-                  <div className="text-center">
-                    <MapPin className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                    <p className="text-lg font-semibold text-muted-foreground">Delhi NCR Area Map</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Connect to Supabase to enable live Google Maps with real-time area-wise traffic data
-                    </p>
-                  </div>
-                </div>
+                <TrafficMap />
               </CardContent>
             </Card>
           </TabsContent>
