@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 interface TrafficArea {
   id: string;
@@ -11,16 +13,9 @@ interface TrafficArea {
   waitTime: number;
 }
 
-declare global {
-  interface Window {
-    google: typeof google;
-  }
-}
-
 const TrafficMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
-  const [apiKey] = useState('AIzaSyBZKvU0Jct8QG9RMx0fO7xBXBj-GggEmXk');
+  const mapInstanceRef = useRef<L.Map | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   // Delhi NCR traffic areas with coordinates
@@ -44,95 +39,77 @@ const TrafficMap = () => {
     }
   };
 
-  const initializeMap = async (apiKey: string) => {
-    if (!mapRef.current || !apiKey) return;
-
-    try {
-      const { Loader } = await import('@googlemaps/js-api-loader');
-      
-      const loader = new Loader({
-        apiKey: apiKey,
-        version: 'weekly',
-        libraries: ['places', 'geometry']
-      });
-
-      const google = await loader.load();
-      
-      const map = new google.maps.Map(mapRef.current, {
-        zoom: 10,
-        center: { lat: 28.6139, lng: 77.2090 }, // Delhi center
-        mapTypeId: 'roadmap',
-        styles: [
-          {
-            featureType: 'poi',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }]
-          }
-        ]
-      });
-
-      mapInstanceRef.current = map;
-
-      // Add traffic layer
-      const trafficLayer = new google.maps.TrafficLayer();
-      trafficLayer.setMap(map);
-
-      // Add markers for each traffic area
-      trafficAreas.forEach((area) => {
-        // Create custom marker with status indicator
-        const marker = new google.maps.Marker({
-          position: { lat: area.lat, lng: area.lng },
-          map: map,
-          title: area.name,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            fillColor: getStatusColor(area.status),
-            fillOpacity: 0.8,
-            strokeColor: '#FFFFFF',
-            strokeWeight: 2,
-            scale: 12
-          }
-        });
-
-        // Create info window
-        const infoWindow = new google.maps.InfoWindow({
-          content: `
-            <div class="p-2">
-              <h3 class="font-semibold text-sm">${area.name}</h3>
-              <div class="mt-1 space-y-1 text-xs">
-                <div class="flex justify-between">
-                  <span>Status:</span>
-                  <span class="capitalize" style="color: ${getStatusColor(area.status)}">${area.status}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Vehicles:</span>
-                  <span>${area.vehicles}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span>Wait Time:</span>
-                  <span>${area.waitTime} min</span>
-                </div>
-              </div>
-            </div>
-          `
-        });
-
-        marker.addListener('click', () => {
-          infoWindow.open(map, marker);
-        });
-      });
-
-      setIsMapLoaded(true);
-    } catch (error) {
-      console.error('Error loading Google Maps:', error);
-    }
+  const createCustomIcon = (status: string) => {
+    const color = getStatusColor(status);
+    return L.divIcon({
+      className: 'custom-marker',
+      html: `<div style="
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: ${color};
+        border: 3px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      "></div>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+    });
   };
 
   useEffect(() => {
-    if (apiKey && !isMapLoaded) {
-      initializeMap(apiKey);
-    }
-  }, [apiKey, isMapLoaded]);
+    if (!mapRef.current) return;
+
+    // Initialize Leaflet map
+    const map = L.map(mapRef.current).setView([28.6139, 77.2090], 10);
+    
+    // Add OpenStreetMap tiles (free, no API key needed)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 18,
+    }).addTo(map);
+
+    mapInstanceRef.current = map;
+
+    // Add markers for each traffic area
+    trafficAreas.forEach((area) => {
+      const marker = L.marker([area.lat, area.lng], {
+        icon: createCustomIcon(area.status)
+      }).addTo(map);
+
+      // Create popup content
+      const popupContent = `
+        <div class="p-2">
+          <h3 class="font-semibold text-sm">${area.name}</h3>
+          <div class="mt-1 space-y-1 text-xs">
+            <div class="flex justify-between">
+              <span>Status:</span>
+              <span class="capitalize" style="color: ${getStatusColor(area.status)}">${area.status}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Vehicles:</span>
+              <span>${area.vehicles}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Wait Time:</span>
+              <span>${area.waitTime} min</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupContent);
+    });
+
+    setIsMapLoaded(true);
+
+    // Cleanup function
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   if (!isMapLoaded) {
     return (
@@ -140,7 +117,7 @@ const TrafficMap = () => {
         <div className="text-center space-y-2">
           <h3 className="text-lg font-semibold">Loading Traffic Map</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Initializing Google Maps with live traffic data...
+            Initializing OpenStreetMap with area-wise traffic data...
           </p>
         </div>
 
